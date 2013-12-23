@@ -1,4 +1,5 @@
 class Escuela
+    attr_reader :control
     def initialize
         @control ={:Fisica=> {:Maestros=>["Juan Carlos Hernandez","Juan Perez"], :Alumnos=>[{:Nombre=>"Juan",:Calificacion=>0.0}] },
                    :Matematicas=>{:Maestros=>["Olivia Martinez", "Juan Perez"], :Alumnos =>[{:Nombre=>"Pedro",:Calificacion=>0.0}] },
@@ -94,6 +95,14 @@ class Escuela
             puts "la materia #{subject} o el alumno #{student} no esta registrado"
         end
     end
+    def agregar_materia!(subject)
+        materia = formatear!(subject).gsub(" ","").to_sym
+        if existe_materia? materia then
+            puts "la materia #{subject} ya esta registrada"
+        else
+            @control[materia] = {:Maestros=>[""], :Alumnos=>[{:Nombre=>"",:Calificacion=>0.0}] }
+        end
+    end
 end
 escuela = Escuela.new
 escuela.ver_materias!
@@ -103,3 +112,5 @@ escuela.quien_imparte? "bases de datos"
 escuela.calificaciones_de "juan"
 escuela.calificacion_por_materia "pedro","matematicas"
 escuela.existe_alumno? "pedro"
+escuela.agregar_materia! "filosofia"
+puts "#{escuela.control}"
