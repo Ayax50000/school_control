@@ -131,6 +131,24 @@ class Escuela
                puts "La materia #{materia} o el maestro #{maestro} no existe" 
         end
     end
+    def asignar_alumno_materia(student,subject)
+        asignado = false
+        materia = formatear!(subject).gsub(" ","").to_sym
+        alumno = formatear!(student).chop
+        if existe_materia? materia  then
+            @control[materia][:Alumnos].each do |estudiante|
+                asignado = true if estudiante[:Nombre] == alumno
+            end
+             if asignado == false then
+                 @control[materia][:Alumnos] << {:Nombre=> alumno ,:Calificacion=>0.0}
+                 puts "Alumno #{alumno} correctamente asignado a #{materia}"
+             else
+                 puts "Alumno #{alumno} ya esta asignado a #{materia}"
+             end
+        else
+            puts "La materia #{materia}  no existe" 
+        end
+    end
 end
 escuela = Escuela.new
 escuela.ver_materias!
@@ -145,5 +163,7 @@ escuela.agregar_maestro! "Olivia martinez"
 puts "#{escuela.control}"
 puts "#{escuela.maestros}"
 escuela.asignar_profesor! "Olivia martinez" , "filosofia"
+puts "#{escuela.control}"
+escuela.asignar_alumno_materia "martin serrano" , "filosofia"
 puts "#{escuela.control}"
 #system 'clear'
