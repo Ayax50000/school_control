@@ -50,40 +50,56 @@ class Escuela
         respuesta = true if @control[materia] != nil
         respuesta
     end
-    def existe_alumno(alumno)
+    def existe_alumno?(estudiante)
         respuesta = false
         @control.each_key do |materia|
             @control[materia][:Alumnos].each do |alumno|
-                respuesta = true if alumno[:Nombre] == alumno 
+                 respuesta = true if alumno[:Nombre] == estudiante 
             end
         end 
         respuesta
     end
     def calificaciones_de(student)
         estudiante = formatear! student
-        almacen_calificaciones = []
+        almacen_calificaciones , encontrado = [], false
         @control.each_key do |materia|
             @control[materia][:Alumnos].each do |alumno|
-                almacen_calificaciones << [materia.to_s , alumno[:Calificacion].to_s] if alumno[:Nombre] == estudiante 
+                if alumno[:Nombre] == estudiante.chop  then
+                    almacen_calificaciones << [materia.to_s , alumno[:Calificacion].to_s]
+                    encontrado = true
+                end
             end
-        end 
-        if almacen_calificaciones != [] then
-        almacen_calificaciones.each {|resultado| puts "#{resultado[0]} = #{resultado[1]}" if resultado != nil }
+        end
+        if encontrado == true then
+        almacen_calificaciones.each {|resultado| puts "#{resultado[0]} = #{resultado[1]}" }
         else
             puts "el alumno #{student} no estudia en esta institucion"
         end
     end
     def calificacion_por_materia(student, subject)
-        if existe_materia? subject then
+        estudiante = formatear! student
+        materia = formatear!(subject).gsub(" ","").to_sym
+        calificacion , relacion  = 0.0 , false
+        if (existe_materia? materia) and (existe_alumno? estudiante.chop) then
+            @control[materia][:Alumnos].each do |alumno|
+                if alumno[:Nombre] == estudiante.chop then
+                    calificacion = alumno[:Calificacion]
+                    relacion = true
 
+                end
+            end
+            puts "#{estudiante} tiene #{calificacion} en #{subject}" if relacion == true
+            puts "#{estudiante} no va a clase de #{subject}" unless relacion == true
         else
-            puts "la materia #{subject} no esta registrada"
+            puts "la materia #{subject} o el alumno #{student} no esta registrado"
         end
     end
 end
 escuela = Escuela.new
-#escuela.ver_materias!
-#escuela.ver_maestros!
+escuela.ver_materias!
+escuela.ver_maestros!
 escuela.ver_alumnos!
-escuela.quien_imparte? "bases de dato"
-escuela.calificaciones_de "Pepe"
+escuela.quien_imparte? "bases de datos"
+escuela.calificaciones_de "juan"
+escuela.calificacion_por_materia "pedro","matematicas"
+escuela.existe_alumno? "pedro"
