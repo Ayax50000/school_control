@@ -11,6 +11,16 @@ class Escuela
         end
         nil
     end
+    def ver_maestros!
+        almacen_maestros = []
+        @control.each_key do |materia|
+            @control[materia][:Maestros].each do |maestro|
+                almacen_maestros << maestro unless almacen_maestros.include? maestro
+            end
+        end 
+        almacen_maestros.each {|maestro| puts maestro}
+    end
 end
 escuela = Escuela.new
 escuela.ver_materias!
+escuela.ver_maestros!
