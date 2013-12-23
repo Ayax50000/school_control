@@ -1,9 +1,14 @@
 class Escuela
     attr_reader :control
+    attr_reader :maestros
     def initialize
-        @control ={:Fisica=> {:Maestros=>["Juan Carlos Hernandez","Juan Perez"], :Alumnos=>[{:Nombre=>"Juan",:Calificacion=>0.0}] },
-                   :Matematicas=>{:Maestros=>["Olivia Martinez", "Juan Perez"], :Alumnos =>[{:Nombre=>"Pedro",:Calificacion=>0.0}] },
-                  :BasesDeDatos=>{:Maestros=>["Olivia Martinez"], :Alumnos =>[{:Nombre=>"Juan",:Calificacion=>0.0}] }}
+        @control ={:Fisica=> {:Maestros=>["Juan Carlos Hernandez","Juan Perez"], 
+                              :Alumnos=>[{:Nombre=>"Juan",:Calificacion=>0.0}] },
+                   :Matematicas=>{:Maestros=>["Olivia Martinez", "Juan Perez"],
+                                  :Alumnos =>[{:Nombre=>"Pedro",:Calificacion=>0.0}] },
+                  :BasesDeDatos=>{:Maestros=>["Olivia Martinez"],
+                                  :Alumnos =>[{:Nombre=>"Juan",:Calificacion=>0.0}] }}
+        @maestros = ["Juan Carlos Hernandez","Juan Perez","Olivia Martinez"]
         nil
     end
     def ver_materias!
@@ -103,6 +108,15 @@ class Escuela
             @control[materia] = {:Maestros=>[""], :Alumnos=>[{:Nombre=>"",:Calificacion=>0.0}] }
         end
     end
+    def agregar_maestro!(teacher)
+        maestro = formatear! teacher
+     if @maestros.include? maestro.chop then
+         puts "ya existe un profesor con ese nombre"
+     else
+         @maestros << maestro.chop
+         puts "maestro agregado correctamente"
+     end
+    end
 end
 escuela = Escuela.new
 escuela.ver_materias!
@@ -113,4 +127,7 @@ escuela.calificaciones_de "juan"
 escuela.calificacion_por_materia "pedro","matematicas"
 escuela.existe_alumno? "pedro"
 escuela.agregar_materia! "filosofia"
+escuela.agregar_maestro! "Olivia martinez"
 puts "#{escuela.control}"
+puts "#{escuela.maestros}"
+#system 'clear'
