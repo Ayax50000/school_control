@@ -36,7 +36,7 @@ class Escuela
         if existe_materia? materia then
         @control[materia][:Maestros].each { |maestro| puts maestro }
         else
-            puts " la materia #{subject} no existe"
+            puts " la materia #{subject} no esta registrada"
         end
     end
     def formatear!(expresion)
@@ -50,9 +50,40 @@ class Escuela
         respuesta = true if @control[materia] != nil
         respuesta
     end
+    def existe_alumno(alumno)
+        respuesta = false
+        @control.each_key do |materia|
+            @control[materia][:Alumnos].each do |alumno|
+                respuesta = true if alumno[:Nombre] == alumno 
+            end
+        end 
+        respuesta
+    end
+    def calificaciones_de(student)
+        estudiante = formatear! student
+        almacen_calificaciones = []
+        @control.each_key do |materia|
+            @control[materia][:Alumnos].each do |alumno|
+                almacen_calificaciones << [materia.to_s , alumno[:Calificacion].to_s] if alumno[:Nombre] == estudiante 
+            end
+        end 
+        if almacen_calificaciones != [] then
+        almacen_calificaciones.each {|resultado| puts "#{resultado[0]} = #{resultado[1]}" if resultado != nil }
+        else
+            puts "el alumno #{student} no estudia en esta institucion"
+        end
+    end
+    def calificacion_por_materia(student, subject)
+        if existe_materia? subject then
+
+        else
+            puts "la materia #{subject} no esta registrada"
+        end
+    end
 end
 escuela = Escuela.new
 #escuela.ver_materias!
 #escuela.ver_maestros!
-#escuela.ver_alumnos!
+escuela.ver_alumnos!
 escuela.quien_imparte? "bases de dato"
+escuela.calificaciones_de "Pepe"
