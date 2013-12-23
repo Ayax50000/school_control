@@ -120,16 +120,6 @@ class Escuela
     def asignar_profesor!(teacher,subject)
         materia = formatear!(subject).gsub(" ","").to_sym
         maestro = formatear!(teacher).chop
-        if existe_materia? materia and @maestros.include? maestro then
-           if !(@control[materia][:Maestros].include? maestro)
-               @control[materia][:Maestros] << maestro
-               puts "Maestro #{maestro} asignado correctamente a #{materia}"
-           else
-               puts "Maestro #{maestro} ya esta asignado a #{materia}"
-           end
-        else
-               puts "La materia #{materia} o el maestro #{maestro} no existe" 
-        end
     end
 end
 escuela = Escuela.new
@@ -144,6 +134,4 @@ escuela.agregar_materia! "filosofia"
 escuela.agregar_maestro! "Olivia martinez"
 puts "#{escuela.control}"
 puts "#{escuela.maestros}"
-escuela.asignar_profesor! "Olivia martinez" , "filosofia"
-puts "#{escuela.control}"
 #system 'clear'
