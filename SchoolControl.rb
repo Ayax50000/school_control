@@ -12,15 +12,18 @@ class Escuela
         nil
     end
     def ver_materias!
+        puts "las materias registradas son:"
         @control.each_key do |materia|
         puts "#{materia}"
         end
         nil
     end
     def ver_maestros!
+        puts "los maestros registrados son:"
        @maestros.each {|maestro| puts maestro}
     end
     def ver_alumnos!
+        puts "los alumnos registrados son:"
         almacen_alumnos = []
         @control.each_key do |materia|
             @control[materia][:Alumnos].each do |alumno|
@@ -34,7 +37,8 @@ class Escuela
         materia = materia.gsub(" ","")
         materia = materia.to_sym
         if existe_materia? materia then
-        @control[materia][:Maestros].each { |maestro| puts maestro }
+            puts "#{materia} es impartida por:"
+            @control[materia][:Maestros].each { |maestro| puts maestro }
         else
             puts " la materia #{subject} no esta registrada"
         end
@@ -71,7 +75,8 @@ class Escuela
             end
         end
         if encontrado == true then
-        almacen_calificaciones.each {|resultado| puts "#{resultado[0]} = #{resultado[1]}" }
+            puts "las calificaciones de #{student} son:"
+            almacen_calificaciones.each {|resultado| puts "#{resultado[0]} = #{resultado[1]}" }
         else
             puts "el alumno #{student} no estudia en esta institucion"
         end
@@ -100,15 +105,16 @@ class Escuela
             puts "la materia #{subject} ya esta registrada"
         else
             @control[materia] = {:Maestros=>[""], :Alumnos=>[{:Nombre=>"",:Calificacion=>0.0}] }
+            puts "#{subject} agregado correctamente a materias"
         end
     end
     def agregar_maestro!(teacher)
         maestro = formatear!(teacher).chop
      if @maestros.include? maestro then
-         puts "ya existe un profesor con ese nombre"
+         puts "ya existe un profesor #{teacher}"
      else
          @maestros << maestro
-         puts "maestro agregado correctamente"
+         puts "#{teacher} agregado correctamente a maestros"
      end
     end
     def asignar_profesor!(teacher,subject)
@@ -167,7 +173,7 @@ class Escuela
                  puts "#{score} correctamente asignado a #{alumno} en #{materia}"
              end
         else
-            puts "La materia #{materia}  no existe" 
+            puts "La materia #{materia} o el alumno #{student} no existe" 
         end
     end
     def crear_interfaz_principal!
@@ -194,6 +200,10 @@ class Escuela
         puts "s) salir de la Aplicacion"
     end
     def regresar_principal
+        puts ""
+        puts ""
+        puts ""
+        puts ""
         puts " presione la tecla r y despues enter para regresar"
         regresar = "n"
         while regresar.chomp != "r"
@@ -242,7 +252,7 @@ when "6" then system 'clear'
 when "7" then system 'clear'
     puts " como se llama el maestro que desea asignar"
     nombre = gets
-    puts " que martiria impartira #{nombre} ?"
+    puts " que materia impatira #{nombre.chomp} ?"
     materia = gets
     escuela.asignar_profesor! nombre , materia
     escuela.regresar_principal 
