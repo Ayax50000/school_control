@@ -29,8 +29,30 @@ class Escuela
         end 
         almacen_alumnos.each {|alumno| puts alumno }
     end
+    def quien_imparte?(subject)
+        materia = formatear! subject
+        materia = materia.gsub(" ","")
+        materia = materia.to_sym
+        if existe_materia? materia then
+        @control[materia][:Maestros].each { |maestro| puts maestro }
+        else
+            puts " la materia #{subject} no existe"
+        end
+    end
+    def formatear!(expresion)
+        capitalizado = ""
+        frase = expresion.split
+        frase.each { |palabra| capitalizado << palabra.capitalize + " "}
+        capitalizado 
+    end
+    def existe_materia?(materia)
+        respuesta = false
+        respuesta = true if @control[materia] != nil
+        respuesta
+    end
 end
 escuela = Escuela.new
-escuela.ver_materias!
-escuela.ver_maestros!
-escuela.ver_alumnos!
+#escuela.ver_materias!
+#escuela.ver_maestros!
+#escuela.ver_alumnos!
+escuela.quien_imparte? "bases de dato"
